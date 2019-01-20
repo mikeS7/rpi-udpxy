@@ -1,4 +1,4 @@
-FROM balenalib/generic-armv7ahf-alpine:3.8 as builder
+FROM balenalib/armv7hf-alpine:3.8 as builder
 
 RUN [ "cross-build-start" ]
 RUN apk add --no-cache curl make gcc musl-dev && \
