@@ -1,0 +1,22 @@
+FROM    alpine:latest
+
+WORKDIR /tmp
+
+RUN     echo "**** install build packages ****" \
+        && apk add --no-cache --virtual build-dependencies \
+                make gcc musl-dev git \
+        && echo "**** clone repository ****" \
+        && git clone https://github.com/pcherenkov/udpxy.git \
+        && echo "**** build ****" \
+        && cd udpxy/chipmunk \
+        && make install \
+        && echo "**** cleanup ****" \
+        && cd / \
+        && rm -r /tmp/udpxy \
+        && apk del --purge build-dependencies
+
+WORKDIR /
+
+EXPOSE  4022
+ENTRYPOINT      [ "/usr/local/bin/udpxy" ]
+CMD     [ "-T", "-p", "4022" ]
